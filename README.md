@@ -1,3 +1,3 @@
 # UrlShortner
 
-A URL shoetner with G0 + Redis.
+A URL shoetner with Go + Redis.

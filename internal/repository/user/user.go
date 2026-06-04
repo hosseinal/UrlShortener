@@ -3,6 +3,8 @@ package user
 import (
 	"context"
 
+	"errors"
+
 	"github.com/hosseinal/UrlShortner/internal/model"
 	"gorm.io/gorm"
 )
@@ -26,6 +28,10 @@ func NewUserRepository(db *gorm.DB) UserRepository {
 }
 
 func (r *userRepository) CreateUser(ctx context.Context, user *model.User) error {
+	// check if the user already exists
+	if err := r.db.WithContext(ctx).Where("email = ?", user.Email).Or("username = ?", user.Username).First(&model.User{}).Error; err == nil {
+		return errors.New("user already exists")
+	}
 	return r.db.WithContext(ctx).Create(user).Error
 }
 

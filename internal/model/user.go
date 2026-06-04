@@ -10,3 +10,7 @@ type User struct {
 	Email     string `gorm:"unique"`
 	Password  string
 }
+
+func (u *User) TableName() string {
+	return "users"
+}

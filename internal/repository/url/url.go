@@ -13,6 +13,7 @@ type UrlRepository interface {
 	GetUrlByID(ctx context.Context, id string) (*model.Url, error)
 	GetUrlByShortUrl(ctx context.Context, shortUrl string) (*model.Url, error)
 	GetUrlByLongUrl(ctx context.Context, longUrl string) (*model.Url, error)
+	DeleteUrl(ctx context.Context, id string) error
 }
 
 type urlRepository struct {
@@ -49,4 +50,8 @@ func (r *urlRepository) GetUrlByLongUrl(ctx context.Context, longUrl string) (*m
 		return nil, err
 	}
 	return &url, nil
+}
+
+func (r *urlRepository) DeleteUrl(ctx context.Context, id string) error {
+	return r.db.WithContext(ctx).Delete(&model.Url{}, id).Error
 }

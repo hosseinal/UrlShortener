@@ -12,6 +12,7 @@ type UrlService interface {
 	CreateUrl(ctx context.Context, url *model.Url) error
 	GetUrlByID(ctx context.Context, id string) (*model.Url, error)
 	GetUrlByShortUrl(ctx context.Context, shortUrl string) (*model.Url, error)
+	DeleteUrl(ctx context.Context, id string) error
 }
 
 type urlService struct {
@@ -57,4 +58,8 @@ func (s *urlService) GetUrlByLongUrl(ctx context.Context, longUrl string) (*mode
 		return cachedUrl, nil
 	}
 	return s.urlRepository.GetUrlByLongUrl(ctx, longUrl)
+}
+
+func (s *urlService) DeleteUrl(ctx context.Context, id string) error {
+	return s.urlRepository.DeleteUrl(ctx, id)
 }

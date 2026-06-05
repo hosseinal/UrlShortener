@@ -79,10 +79,9 @@ func (h *UrlHandler) GetUrl(c *gin.Context) {
 }
 
 func (h *UrlHandler) RedirectUrl(c *gin.Context) {
-	var url dto.GetUrlRequest
-	c.ShouldBindJSON(&url)
+	shortUrl := c.Param("shortUrl")
 
-	urlResponse, err := h.urlService.GetUrlByShortUrl(c.Request.Context(), url.ShortUrl)
+	urlResponse, err := h.urlService.GetUrlByShortUrl(c.Request.Context(), shortUrl)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

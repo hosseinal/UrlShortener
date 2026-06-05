@@ -2,7 +2,6 @@ package middleware
 
 import (
 	"net/http"
-	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/hosseinal/UrlShortner/internal/service"
@@ -27,7 +26,7 @@ func (j *JWT) JWT() gin.HandlerFunc {
 			c.Abort()
 		}
 
-		claims, err := toolbox.ParseJWT(token, os.Getenv("ACCESS_SECRET"))
+		claims, err := toolbox.ParseJWT(token, j.AccessSecret)
 		switch err {
 		case toolbox.ErrorAccessExpired:
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "Access token expired"})

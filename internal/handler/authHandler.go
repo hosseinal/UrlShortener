@@ -7,12 +7,12 @@ import (
 	"github.com/hosseinal/UrlShortner/internal/dto"
 	"github.com/hosseinal/UrlShortner/internal/service"
 	"github.com/hosseinal/UrlShortner/internal/toolbox"
-
-	"os"
 )
 
 type AuthHandler struct {
-	authService service.AuthService
+	authService   service.AuthService
+	accessSecret  string
+	refreshSecret string
 }
 
 func NewAuthHandler(authService service.AuthService) *AuthHandler {
@@ -31,7 +31,7 @@ func (h *AuthHandler) Register(c *gin.Context) {
 	}
 
 	// create a new JWT token
-	accessToken, refreshToken, err := toolbox.GenerateJWT(user.Username, os.Getenv("ACCESS_SECRET"), os.Getenv("REFRESH_SECRET"))
+	accessToken, refreshToken, err := toolbox.GenerateJWT(user.Username, h.accessSecret, h.refreshSecret)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -54,7 +54,7 @@ func (h *AuthHandler) Login(c *gin.Context) {
 		return
 	}
 
-	accessToken, refreshToken, err := toolbox.GenerateJWT(user.Username, os.Getenv("ACCESS_SECRET"), os.Getenv("REFRESH_SECRET"))
+	accessToken, refreshToken, err := toolbox.GenerateJWT(user.Username, h.accessSecret, h.refreshSecret)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

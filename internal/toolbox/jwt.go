@@ -8,7 +8,6 @@ import (
 )
 
 var ErrorAccessExpired = errors.New("access token expired")
-var ErrorRefreshExpired = errors.New("refresh token expired")
 var ErrorInvalidToken = errors.New("invalid token")
 var ErrorInvalidClaims = errors.New("invalid claims")
 
